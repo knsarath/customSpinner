@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/spinner"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textview"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:paddingLeft="5dp"
+            android:layout_toLeftOf="@+id/arrow_icon"
+            android:layout_toStartOf="@+id/arrow_icon"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:minHeight="15dp"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/textview"
+            android:layout_width="match_parent"
+            android:background="#afaeae"
+            android:alpha="0.4"
+            android:layout_height="1dp" />
+        <ImageView
+            android:id="@+id/arrow_icon"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+    </RelativeLayout>
+   <LinearLayout
+       android:id="@+id/expaned_list"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:background="@drawable/shadow_rounded"
+       android:visibility="visible">
+       <RelativeLayout
+           android:id="@+id/list_header"
+           android:layout_width="match_parent"
+           android:background="@drawable/top_round_bg"
+           android:layout_height="wrap_content">
+           <TextView
+               android:id="@+id/list_hint_text"
+               android:paddingTop="5dp"
+               android:layout_toLeftOf="@+id/list_header_arrow_icon"
+               android:layout_toStartOf="@+id/list_header_arrow_icon"
+               android:layout_margin="10dp"
+               android:layout_width="match_parent"
+               android:minHeight="15dp"
+               android:layout_height="wrap_content" />
+           <View
+               android:layout_marginLeft="5dp"
+               android:layout_marginRight="5dp"
+               android:layout_below="@+id/list_hint_text"
+               android:layout_width="match_parent"
+               android:background="#afaeae"
+               android:alpha="0.4"
+               android:layout_height="1dp" />
+           <ImageView
+               android:id="@+id/list_header_arrow_icon"
+               android:layout_marginTop="5dp"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentEnd="true"
+               android:layout_alignParentTop="true"
+               android:layout_width="32dp"
+               android:layout_height="32dp"
+               android:rotation="180"
+               android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+       </RelativeLayout>
+       <ListView
+           android:id="@+id/drop_down"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </ListView>
+   </LinearLayout>
+</FrameLayout>
