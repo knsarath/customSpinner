@@ -2,18 +2,19 @@ package barcode.simple.com.myspinner.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -70,6 +71,15 @@ public class CustomSpinner<T> extends RelativeLayout {
         TextView expandHintTextView = (TextView) view.findViewById(R.id.list_hint_text);
         mTextView = (TextView) view.findViewById(R.id.textview);
         mListView = (ListView) findViewById(R.id.drop_down);
+        mListView.setOnTouchListener(new OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
         mExpandedList = view.findViewById(R.id.expaned_list);
         try {
             TypedArray styledAttrs = getContext().obtainStyledAttributes(attrs, R.styleable.CustomSpinnerAttrs);
@@ -194,6 +204,7 @@ public class CustomSpinner<T> extends RelativeLayout {
         ArrayAdapter<T> adapter = new ArrayAdapter<T>(getContext(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, mListItems);
         mListView.setAdapter(adapter);
+        setListViewHeightBasedOnChildren(mListView);
     }
 
     public T getSelectedItem() {
@@ -202,5 +213,26 @@ public class CustomSpinner<T> extends RelativeLayout {
 
     public void setItemClickListener(ItemClickListener<T> itemClickListener) {
         mItemClickListener = itemClickListener;
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }
