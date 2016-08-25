@@ -46,7 +46,7 @@ public class CustomSpinner<T> extends RelativeLayout {
     private SpinnerState mSpinnerState = SpinnerState.COLLAPSED;
 
     public interface ItemClickListener<T> {
-        void onItemSelected(T selectedItem);
+        void onItemSelected(CustomSpinner customSpinner ,T selectedItem);
     }
 
     private ItemClickListener<T> mItemClickListener;
@@ -98,7 +98,7 @@ public class CustomSpinner<T> extends RelativeLayout {
                 mTextView.setText(selectedItem.toString());
                 mSelectedItem = selectedItem;
                 if (mItemClickListener != null) {
-                    mItemClickListener.onItemSelected(selectedItem);
+                    mItemClickListener.onItemSelected(CustomSpinner.this, selectedItem);
                 }
                 collapse();
             }

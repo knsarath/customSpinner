@@ -1,8 +1,7 @@
 package barcode.simple.com.myspinner;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -19,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
         bankCustomSpinner.setDropDownListItems(getBanks());
         bankCustomSpinner.setItemClickListener(new CustomSpinner.ItemClickListener<Bank>() {
             @Override
-            public void onItemSelected(Bank selectedItem) {
-                Toast.makeText(getApplicationContext(), selectedItem.toString(), Toast.LENGTH_SHORT).show();
+            public void onItemSelected(CustomSpinner customSpinner, Bank selectedItem) {
+                customSpinner.getId(); // id of the spinner
             }
         });
 
