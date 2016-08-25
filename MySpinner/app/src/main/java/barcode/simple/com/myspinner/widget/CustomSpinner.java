@@ -46,7 +46,7 @@ public class CustomSpinner<T> extends RelativeLayout {
     private SpinnerState mSpinnerState = SpinnerState.COLLAPSED;
 
     public interface ItemClickListener<T> {
-        void onItemSelected(CustomSpinner customSpinner ,T selectedItem);
+        void onItemSelected(CustomSpinner customSpinner, T selectedItem);
     }
 
     private ItemClickListener<T> mItemClickListener;
@@ -94,13 +94,7 @@ public class CustomSpinner<T> extends RelativeLayout {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                T selectedItem = mListItems.get(position);
-                mTextView.setText(selectedItem.toString());
-                mSelectedItem = selectedItem;
-                if (mItemClickListener != null) {
-                    mItemClickListener.onItemSelected(CustomSpinner.this, selectedItem);
-                }
-                collapse();
+                setSelectedItem(position);
             }
         });
 
@@ -109,6 +103,18 @@ public class CustomSpinner<T> extends RelativeLayout {
         listHintHeader.setOnClickListener(clickListener);
         spinner.setOnClickListener(clickListener);
 
+    }
+
+    private void setSelectedItem(int position) {
+        if (mListItems != null && !mListItems.isEmpty() && mListItems.size() >= position) {
+            T selectedItem = mListItems.get(position);
+            mTextView.setText(selectedItem.toString());
+            mSelectedItem = selectedItem;
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemSelected(CustomSpinner.this, selectedItem);
+            }
+            collapse();
+        }
     }
 
     @NonNull
@@ -179,6 +185,7 @@ public class CustomSpinner<T> extends RelativeLayout {
     public void setDropDownListItems(ArrayList<T> listItems) {
         mListItems = listItems;
         setDropDownList(listItems);
+        setSelectedItem(0);
     }
 
     public void expand() {
