@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -71,15 +70,6 @@ public class CustomSpinner<T> extends RelativeLayout {
         TextView expandHintTextView = (TextView) view.findViewById(R.id.list_hint_text);
         mTextView = (TextView) view.findViewById(R.id.textview);
         mListView = (ListView) findViewById(R.id.drop_down);
-        mListView.setOnTouchListener(new OnTouchListener() {
-            // Setting on Touch Listener for handling the touch inside ScrollView
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // Disallow the touch request for parent scroll on touch of child view
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                return false;
-            }
-        });
         mExpandedList = view.findViewById(R.id.expaned_list);
         try {
             TypedArray styledAttrs = getContext().obtainStyledAttributes(attrs, R.styleable.CustomSpinnerAttrs);
