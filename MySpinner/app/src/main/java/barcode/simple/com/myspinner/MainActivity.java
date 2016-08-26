@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         bankCustomSpinner.setWhatToPrint(new CustomSpinner.Printable<Bank>() {
             @Override
             public String getPrintable(Bank bank) {
-                return bank.toString();
+                return bank.getIfsc();
             }
         });
         bankCustomSpinner.setDropDownListItems(getBanks());
