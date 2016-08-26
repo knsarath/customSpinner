@@ -15,6 +15,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CustomSpinner<Bank> bankCustomSpinner = (CustomSpinner) findViewById(R.id.my_spinner);
+        bankCustomSpinner.setWhatToPrint(new CustomSpinner.Printable<Bank>() {
+            @Override
+            public String getPrintable(Bank bank) {
+                return bank.toString();
+            }
+        });
         bankCustomSpinner.setDropDownListItems(getBanks());
         bankCustomSpinner.setItemClickListener(new CustomSpinner.ItemClickListener<Bank>() {
             @Override

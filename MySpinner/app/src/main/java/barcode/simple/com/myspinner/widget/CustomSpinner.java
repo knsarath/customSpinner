@@ -37,6 +37,8 @@ public class CustomSpinner<T> extends RelativeLayout {
     private String mHintText = null;
     private int mHintTextSize;
     private int mItemTextSize;
+    private Printable<T> mWhatToPrint;
+
 
     private enum SpinnerState {
         COLLAPSED,
@@ -44,6 +46,10 @@ public class CustomSpinner<T> extends RelativeLayout {
     }
 
     private SpinnerState mSpinnerState = SpinnerState.COLLAPSED;
+
+    public interface Printable<T> {
+        String getPrintable(T t);
+    }
 
     public interface ItemClickListener<T> {
         void onItemSelected(CustomSpinner customSpinner, T selectedItem);
@@ -198,8 +204,8 @@ public class CustomSpinner<T> extends RelativeLayout {
     }
 
     private void setDropDownList(ArrayList<T> mListItems) {
-        ArrayAdapter<T> adapter = new ArrayAdapter<T>(getContext(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, mListItems);
+        // ArrayAdapter<T> adapter = new ArrayAdapter<T>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, mListItems);
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(getContext(), mListItems);
         mListView.setAdapter(adapter);
         setListViewHeightBasedOnChildren(mListView);
     }
@@ -211,6 +217,7 @@ public class CustomSpinner<T> extends RelativeLayout {
     public void setItemClickListener(ItemClickListener<T> itemClickListener) {
         mItemClickListener = itemClickListener;
     }
+
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -232,4 +239,39 @@ public class CustomSpinner<T> extends RelativeLayout {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
+
+
+    public void setWhatToPrint(Printable<T> whatToPrint) {
+        mWhatToPrint = whatToPrint;
+    }
+
+    public class CustomSpinnerAdapter extends ArrayAdapter<T> {
+        private class ViewHolder {
+            private TextView itemView;
+        }
+
+        public CustomSpinnerAdapter(Context context, ArrayList<T> items) {
+            super(context, -1, items);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder = null;
+            if (convertView == null) {
+                convertView = LayoutInflater.from(this.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+                viewHolder = new ViewHolder();
+                viewHolder.itemView = (TextView) convertView.findViewById(android.R.id.text1);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            T item = getItem(position);
+            if (item != null) {
+                final String text = (mWhatToPrint == null) ? item.toString() : mWhatToPrint.getPrintable(item);
+                viewHolder.itemView.setText(text);
+            }
+            return convertView;
+        }
+    }
+
+
 }
